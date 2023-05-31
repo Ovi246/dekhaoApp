@@ -12,7 +12,6 @@ window.addEventListener("load", () => {
       .attributes.removeNamedItem("hidden");
   } else {
     let commElem = document.getElementsByClassName("room-comm");
-
     for (let i = 0; i < commElem.length; i++) {
       commElem[i].attributes.removeNamedItem("hidden");
     }
@@ -35,23 +34,6 @@ window.addEventListener("load", () => {
       //set socketId
       socketId = socket.io.engine.id;
       document.getElementById("randomNumber").innerText = randomNumber;
-      document.getElementById(
-        "copy-text"
-      ).innerHTML = `<span class="text-white">Share Link: <input type="text" class="text" value=${window.location.href} />
-      <button><i class="fa fa-clone"></i></button></span>`;
-
-      //little function to copy invite url
-      let copyText = document.querySelector(".copy-text");
-      copyText.querySelector("button").addEventListener("click", function () {
-        let input = copyText.querySelector("input.text");
-        input.select();
-        document.execCommand("copy");
-        copyText.classList.add("active");
-        window.getSelection().removeAllRanges();
-        setTimeout(function () {
-          copyText.classList.remove("active");
-        }, 2500);
-      });
 
       // will subscribe whenever someone create room or joined room
       socket.emit("subscribe", {

@@ -2,6 +2,7 @@ import helpers from "./helpers.js";
 
 window.addEventListener("load", () => {
   //When the chat icon is clicked
+
   document.querySelector("#toggle-chat-pane").addEventListener("click", (e) => {
     let chatElem = document.querySelector("#chat-pane");
     let mainSecElem = document.querySelector("#main-section");
@@ -48,27 +49,33 @@ window.addEventListener("load", () => {
   document.getElementById("create-room").addEventListener("click", (e) => {
     e.preventDefault();
 
-    let roomName = document.querySelector("#room-name").value;
-    let yourName = document.querySelector("#your-name").value;
+    const user = localStorage.getItem("user");
+    if (user) {
+      let roomName = document.querySelector("#room-name").value;
+      let yourName = document.querySelector("#your-name").value;
 
-    if (roomName && yourName) {
-      document.querySelector("#err-msg").innerText = "";
+      if (roomName && yourName) {
+        document.querySelector("#err-msg").innerText = "";
 
-      sessionStorage.setItem("username", yourName);
+        sessionStorage.setItem("username", yourName);
 
-      let roomLink = `${location.origin}?room=${roomName
-        .trim()
-        .replace(" ", "_")}_${helpers.generateRandomString()}`;
+        let roomLink = `${location.origin}?room=${roomName
+          .trim()
+          .replace(" ", "_")}_${helpers.generateRandomString()}`;
 
-      document.querySelector(
-        "#room-created"
-      ).innerHTML = `Room successfully created. Click <a href='${roomLink}'>here</a> to enter room. 
+        document.querySelector(
+          "#room-created"
+        ).innerHTML = `Room successfully created. Click <a href='${roomLink}'>here</a> to enter room. 
                 Share the room link with your partners.`;
 
-      document.querySelector("#room-name").value = "";
-      document.querySelector("#your-name").value = "";
+        document.querySelector("#room-name").value = "";
+        document.querySelector("#your-name").value = "";
+      } else {
+        document.querySelector("#err-msg").innerText =
+          "All fields are required";
+      }
     } else {
-      document.querySelector("#err-msg").innerText = "All fields are required";
+      window.location.href = "/login";
     }
   });
 

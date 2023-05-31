@@ -56,10 +56,34 @@
     </div>
 
     <nav class="navbar fixed-top bg-info rounded-0 d-print-none">
-      <div class="text-white">DekhaoApp</div>
+      <div>
+        <a href="/" class="text-white pe-auto text-decoration-none"
+          >DekhaoApp</a
+        >
+      </div>
 
       <div class="pull-right room-comm" hidden>
-        <span id="copy-text" class="copy-text mr-5"></span>
+        <label for="invite-link" style="color: white">Invite Link:</label>
+        <input type="text" id="invite-link" value="" />
+        <button type="button" onclick="copyInviteLink()">
+          <i class="fas fa-copy"></i>
+        </button>
+
+        <script>
+          document
+            .getElementById("invite-link")
+            .setAttribute("value", window.location.href);
+          async function copyInviteLink() {
+            var inviteLink = document.querySelector("#invite-link");
+            try {
+              await navigator.clipboard.writeText(inviteLink.value);
+              console.log("Invite link copied to clipboard");
+            } catch (err) {
+              console.error("Failed to copy invite link: ", err);
+            }
+          }
+        </script>
+
         <span class="text-white mr-5">
           Unique Identifier: <span id="randomNumber"></span>
         </span>
@@ -115,10 +139,13 @@
           ></a>
         </button>
       </div>
+      <button class="btn btn-info rounded-0 text-white" id="logout" hidden>
+        Logout
+      </button>
     </nav>
 
     <div class="container-fluid" id="room-create" hidden>
-      <div class="row">
+      <div class="row mt-5">
         <div class="col-12 h2 mt-5 text-center">Create Room</div>
       </div>
 
@@ -236,5 +263,16 @@
         </div>
       </div>
     </div>
+    <script>
+      const logoutButton = document.getElementById("logout");
+      if (localStorage.getItem("user")) {
+        logoutButton.removeAttribute("hidden");
+      }
+      logoutButton.addEventListener("click", (e) => {
+        localStorage.removeItem("user");
+        logoutButton.setAttribute("hidden", "hidden");
+        window.location("/");
+      });
+    </script>
   </body>
 </html>
